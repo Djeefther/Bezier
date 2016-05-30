@@ -14,7 +14,7 @@
 #include "Bezier.h"
 #include "Point.h"
 
-//Parametros:
+//Parameters:
 #define DELTA_T_BEZIER 0.001
 #define WIDTH 800
 #define HEIGHT 600
@@ -24,7 +24,7 @@
 #define ITERATIVE_BEZIER_VELOCITY_MIN 1
 #define ITERATIVE_BEZIER_VELOCITY_MAX 500
 
-//Parametros de cores e tamanho dos pontos e linhas
+//Parameters of the colors and size of points and lines
 const color_t background_help_color = color_uchar(0x1B,0x58,0x7B);
 const color_t text_help_color = color_uchar(0xEC, 0xD0, 0x78);
 const color_t bezier_line_color = { 1.0f, 0.0f, 0.0f };
@@ -38,7 +38,7 @@ const float intermediate_lines_width = 1.0f;
 std::vector<color_t>& intermediate_points_colors = intermediate_lines_colors;
 const float intermediate_points_width = 3.0f;
 
-//Lista das cores usadas no modo iterativo:
+//List of the colors used in iterative mode:
 void init_intermediate_lines_colors() {
 	intermediate_lines_colors.push_back(color_uchar(0, 169, 235));//Bright blue 
 	intermediate_lines_colors.push_back(color_uchar(255, 233, 0));//Serdar Yellow
@@ -51,7 +51,7 @@ void init_intermediate_lines_colors() {
 	intermediate_lines_colors.push_back(color_uchar(251, 176, 52));//Orange
 }
 
-//Variaveis globais de controle:
+//Global control variables
 Bezier<Point2d> bezier;
 int point_selected = -1;
 std::vector<Point2d> actual_bezier_points;
@@ -110,7 +110,7 @@ void draw_text() {
 			return aux;
 		};
 
-		//Desenha um quadrado ao fundo
+		//Draw a square in the end
 		glColor_t(background_help_color);
 		glBegin(GL_QUADS); {
 			int x_begin = x - margin;
@@ -143,7 +143,7 @@ void draw_text() {
 
 	}
 
-	//Printando dados gerais
+	//Print general data
 	{
 		std::stringstream ss;
 		int x = screen_width - 110;
@@ -205,7 +205,7 @@ void draw() {
 	};
 
 	if (bezier.valid()) {
-		//Computa pontos de bezier (todos se não estiver no modo iterativo)
+		//Compute the bezier points (all of them if not in iterative mode)
 		if (iterative_bezier) {
 			if (!iterative_bezier_paused) {
 				for (unsigned i = 0; i < iterative_bezier_velocity; i++)  {
@@ -221,7 +221,7 @@ void draw() {
 		}
 
 		if (iterative_bezier) {
-			//Desenha as linhas auxiliares do bezier (apenas modo iterativo)
+			//Draw the auxiliary lines (just iterative mode)
 			size_t color_level = 0;
 			size_t color_level_limit = intermediate_lines_colors.size() - 1;
 			glLineWidth(intermediate_lines_width);
@@ -232,7 +232,7 @@ void draw() {
 			}
 
 
-			//Desenha os pontos de encontro das linhas auxiliares do bezier
+			//Draw the meeting point of the auxiliary lines of the bezier
 			color_level = 0;
 			color_level_limit = intermediate_lines_colors.size() - 1;
 			glPointSize(intermediate_points_width);
@@ -245,24 +245,24 @@ void draw() {
 	}
 
 	if (bezier.control_points().size() > 0) {
-		//Retas entre pontos de controle
+		//Lines between control points
 		glColor_t(lines_between_control_points_color);
 		glLineWidth(lines_between_control_points_width);
 		draw_strip_line(bezier.control_points());
 
-		//Pontos de controle
+		//Control points
 		glColor_t(control_points_color);
 		glPointSize(control_points_size);
 		draw_points(bezier.control_points());
 	}
 
 	if (bezier.valid()) {
-		//Desenha a bezier (de forma completa ou não)
+		//Draw a bezier (complet or not)
 		glColor_t(bezier_line_color);
 		glLineWidth(bezier_line_width);
 		draw_strip_line(actual_bezier_points);
 
-		//Checagens para o próximo draw
+		//Checking for the next draw
 		if (iterative_bezier) {
 			if (iterative_bezier_t >= 1.0) {
 				reset_iterative_bezier();
@@ -320,7 +320,7 @@ void click_mouse(int button, int state, int x, int y) {
 			else {
 				bezier.control_points().emplace_back(p);
 
-				point_selected = actual_point_selected;//Remover a seleção a algum ponto, caso exista
+				point_selected = actual_point_selected;//Remove selection if exists
 				undo_points.clear();
 				reset_iterative_bezier();
 
@@ -410,7 +410,7 @@ void keybord(unsigned char c, int x, int y) {
 
 		bezier.control_points().emplace_back(x,y);
 
-		point_selected = -1;//Remover a seleção a algum ponto, caso exista.
+		point_selected = -1;//Remove the select if exists
 		undo_points.clear();
 		reset_iterative_bezier();
 

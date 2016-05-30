@@ -7,8 +7,8 @@ template<class PointType>
 class Bezier {
 	std::vector<PointType> control_points_;
 	std::vector<std::vector<PointType>> auxiliar_points_;
-	//auxiliar_points_ são n-1 linhas, onde a primeira linha tem n-1 pontos, a segunda tem n-2 
-	//e assim até a ultima linha ter apenas 1 elemento.
+	//auxiliar_points are n-1 lines, where the first line has n-1 points, the second has n-2
+	//and so on until last line has just one element
 public:
 	class iterator;
 	std::vector<PointType>& control_points() {
